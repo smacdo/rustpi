@@ -47,13 +47,20 @@ fn main() -> ! {
         &mut pac.RESETS,
     );
 
+    // Turn the new LED block on.
+    let mut block_led = pins.gpio14.into_push_pull_output();
+    block_led.set_high().unwrap();
+
     // Turn the LED on and off repeatedly.
     let mut led_pin = pins.led.into_push_pull_output();
 
     loop {
         led_pin.set_high().unwrap();
+        block_led.set_low().unwrap();
         delay.delay_ms(1000);
+
         led_pin.set_low().unwrap();
+        block_led.set_high().unwrap();
         delay.delay_ms(1000);
     }
 }
